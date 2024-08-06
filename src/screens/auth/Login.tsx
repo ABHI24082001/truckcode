@@ -162,7 +162,7 @@ export default function Login(): JSX.Element {
             Login
           </Btn>
 
-          <Box w="full" justifyContent={'center'} alignItems={'center'}>
+          {/* <Box w="full" justifyContent={'center'} alignItems={'center'}>
             <Text fontSize={14}>Sign UP as</Text>
 
             <HStack space={2} alignItems={'center'} justifyContent={'center'}>
@@ -183,7 +183,7 @@ export default function Login(): JSX.Element {
                 </Heading>
               </Pressable>
             </HStack>
-          </Box>
+          </Box> */}
         </Center>
       </ScrollView>
     </>
