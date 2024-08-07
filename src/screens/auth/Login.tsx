@@ -1,17 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {
-  Box,
-  Center,
-  HStack,
-  Heading,
-  IInputProps,
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  useToast,
-} from 'native-base';
+import {Box, Center, Heading, Image, ScrollView, useToast} from 'native-base';
 import React, {useMemo, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Dimensions} from 'react-native';
@@ -21,6 +10,7 @@ import {AppInput, Btn} from '~/components/core';
 import AppIcon, {IconProps} from '~/components/core/AppIcon';
 import {useAuth} from '~/hooks';
 import {PublicRoutesTypes} from '~/routes';
+import {login} from './api'; 
 
 type FormInput = {
   key: string;
@@ -49,32 +39,34 @@ export default function Login(): JSX.Element {
     formState: {errors},
   } = useForm<FormData>();
 
- const handleLogin = async ({username, password}: FormData) => {
-   const defaultEmail = 'demo@gmail.com';
-   const defaultPassword = '12345678';
-
-   try {
-     if (username === defaultEmail && password === defaultPassword) {
-       toast.show({
-         title: 'Login Successful!',
-         duration: 5000,
-       });
-       setUser({
-         email: username,
-         password: password,
-       });
-       console.log(username, password);
-     } else {
-       toast.show({
-         title: 'Login Failed',
-         duration: 5000,
-       });
-     }
-   } catch (error) {
-     console.log(error);
-   }
- };
-
+  const handleLogin = async ({username, password}: FormData) => {
+    try {
+      
+      const response = await login(username, password);
+      if (response.result.Status) {
+        toast.show({
+          title: 'Login Successful!',
+          duration: 5000,
+        });
+        setUser({
+          email: username,
+          password: password,
+        });
+        console.log(username, password);
+      } else {
+        toast.show({
+          title: 'Login Failed',
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      console.log('Login error:', error);
+      toast.show({
+        title: 'An error occurred during login',
+        duration: 5000,
+      });
+    }
+  };
 
   const formInputs: FormInput[] = useMemo(
     () => [
@@ -86,7 +78,7 @@ export default function Login(): JSX.Element {
         rules: {
           required: 'Username is required',
           pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            value: /^[A-Za-z]+$/,
             message: 'Invalid email address',
           },
         },

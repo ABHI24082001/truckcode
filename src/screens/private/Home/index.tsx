@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   Box,
@@ -11,8 +11,10 @@ import {
   VStack,
   Button,
   HStack,
+  Modal,
+  Input,
+  useToast,
 } from 'native-base';
-
 import {IMAGES} from '~/assets';
 import {DistributorItemCard} from '~/components';
 import AppIcon from '~/components/core/AppIcon';
@@ -30,12 +32,26 @@ export default function Profile() {
   const route = useRoute();
   const {scannedData: newScannedData} = route.params || {};
   const {scannedHistory, addScannedData} = useScannedData();
+  const toast = useToast();
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [code, setCode] = useState('');
 
   useEffect(() => {
     if (newScannedData) {
       addScannedData(newScannedData);
     }
   }, [newScannedData]);
+
+  const handleCodeSubmit = () => {
+    toast.show({
+      title: `Code Submitted: ${code}`,
+      status: 'success',
+      duration: 3000,
+    });
+    setModalVisible(false);
+    setCode('');
+  };
 
   const listData = [
     {
@@ -59,13 +75,7 @@ export default function Profile() {
           flex={1}
           borderRadius={10}
           py={2}
-          bg={{
-            linearGradient: {
-              colors: [COLORS.theme[100], COLORS.secondary[200]],
-              start: [0, 1],
-              end: [0, 0.5],
-            },
-          }}>
+         >
           {user?.role === 'DISTRIBUTOR' && (
             <DistributorItemCard itemData={data?.data?.data} />
           )}
@@ -90,9 +100,11 @@ export default function Profile() {
           <Box>
             <HStack space={2} alignItems={'center'} my={1}>
               <AppIcon AntDesignName="enviroment" color={'#63c1ff'} size={22} />
-              <Text bold fontSize={'sm'}>
-                Enter the code
-              </Text>
+              <Pressable onPress={() => setModalVisible(true)}>
+                <Text bold fontSize={'sm'}>
+                  Enter the code
+                </Text>
+              </Pressable>
             </HStack>
             <Pressable onPress={logout}>
               <HStack space={2} alignItems={'center'} my={1}>
@@ -129,32 +141,90 @@ export default function Profile() {
         {scannedHistory.length > 0 && (
           <Box my={10} mx={5} p={3} bg={'#fff'} borderRadius={10}>
             {scannedHistory.map((data, index) => (
-              <Box
-                key={index}
-                mb={5}
-                p={3}
-                bg={COLORS.secondary[200]}
-                borderRadius={10}>
+              <Box key={index} mb={5} p={3} bg={'#fff'} borderRadius={10}>
                 <Text fontSize={16} color={COLORS.secondary[800]} bold mb={2}>
                   Scanned Data {index + 1}
                 </Text>
-                <Text fontSize={14} color={COLORS.secondary[700]}>
-                  <Text bold>Code:</Text> {data.split('|')[0]}
-                </Text>
-                <Text fontSize={14} color={COLORS.secondary[700]}>
-                  <Text bold>Volume:</Text> {data.split('|')[1]}
-                </Text>
-                <Text fontSize={14} color={COLORS.secondary[700]}>
-                  <Text bold>Date & Time:</Text> {data.split('|')[2]}
-                </Text>
-                <Text fontSize={14} color={COLORS.secondary[700]}>
-                  <Text bold>Details:</Text> {data.split('|')[3]}
-                </Text>
+                <VStack space={2}>
+                  <HStack space={2} alignItems="center">
+                    <Text bold>Code:</Text>
+                    <Input
+                      rounded={10}
+                      borderWidth={2}
+                      borderColor={'gray'}
+                      flex={1}
+                      placeholder="Enter code"
+                      value={data.split('|')[0]}
+                      onChangeText={text => {
+                        const newData = [...scannedHistory];
+                        newData[index] = `${text}|${data.split('|')[1]}|${
+                          data.split('|')[2]
+                        }|${data.split('|')[3]}`;
+                        addScannedData(newData.join('|'));
+                      }}
+                    />
+                  </HStack>
+                  <HStack space={2} alignItems="center">
+                    <Text bold>Volume:</Text>
+                    <Input
+                      
+                      flex={1}
+                      rounded={10}
+                      borderWidth={2}
+                      borderColor={'gray'}
+                      placeholder="Enter volume"
+                      value={data.split('|')[1]}
+                      onChangeText={text => {
+                        const newData = [...scannedHistory];
+                        newData[index] = `${data.split('|')[0]}|${text}|${
+                          data.split('|')[2]
+                        }|${data.split('|')[3]}`;
+                        addScannedData(newData.join('|'));
+                      }}
+                    />
+                  </HStack>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>Date & Time:</Text> {data.split('|')[2]}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>Details:</Text> {data.split('|')[3]}
+                  </Text>
+                </VStack>
               </Box>
             ))}
+
+            <HStack space={2} justifyContent="center" mt={3}>
+              <Button
+                flex={1}
+                onPress={() => toast.show({title: 'In', status: 'info'})}>
+                In
+              </Button>
+              <Button
+                flex={1}
+                onPress={() => toast.show({title: 'Out', status: 'info'})}>
+                Out
+              </Button>
+            </HStack>
           </Box>
         )}
       </ScrollView>
+
+      <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Enter the Code</Modal.Header>
+          <Modal.Body>
+            <Input
+              placeholder="Enter the code"
+              value={code}
+              onChangeText={text => setCode(text)}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onPress={handleCodeSubmit}>Submit</Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
     </Box>
   );
 }
