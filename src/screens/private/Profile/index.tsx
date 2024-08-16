@@ -22,6 +22,9 @@ import {useAuth} from '~/hooks';
 import {StackAndTabType} from '~/routes/private/types';
 import {COLORS, screenWidth} from '~/styles';
 
+
+
+
 export default function Profile() {
   const {navigate} = useNavigation<StackAndTabType>();
   const {logout, user} = useAuth();
@@ -88,6 +91,8 @@ export default function Profile() {
       },
     },
   ];
+
+
   return (
     <Box safeAreaTop flex={1} bg={COLORS.theme[100]}>
       <Row
@@ -113,8 +118,7 @@ export default function Profile() {
             <Text bold fontSize={'md'}>
               History
             </Text>
-          </HStack>
-         
+          </HStack>   
         </Box>
       </Row>
 
@@ -137,6 +141,9 @@ export default function Profile() {
       <Button onPress={() => navigate('HistoryScreen')} mt={4} mb={8} mx={10} rounded={5}>
         View Scan History
       </Button>
+
+
+
 
       {/* <ScrollView showsVerticalScrollIndicator={false}>
         <Box

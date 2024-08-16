@@ -24,14 +24,28 @@ const Coupons = () => {
 
   const {navigate} = useNavigation<StackAndTabType>();
 
+  // const handlePress = boxName => {
+  //   setSelectedBox(boxName === selectedBox ? null : boxName);
+
+  //   // Navigate only when "Loading" is pressed
+  //   if (boxName === 'Loading') {
+  //     navigate('Notifications'); // Replace 'Notifications' with your desired screen name
+  //   }
+  // };
+
+
   const handlePress = boxName => {
     setSelectedBox(boxName === selectedBox ? null : boxName);
 
-    // Navigate only when "Loading" is pressed
+    // Navigate to specific screens based on the boxName
     if (boxName === 'Loading') {
-      navigate('Notifications'); // Replace 'Notifications' with your desired screen name
+      navigate('Notifications'); // Navigate to Notifications screen
+    } else if (boxName === 'Unloading') {
+      navigate('OrderDetailDistributor'); // Navigate to Offer screen
     }
   };
+
+
 
   const getBackgroundColor = boxName => {
     return selectedBox === boxName ? 'lightblue' : 'white';

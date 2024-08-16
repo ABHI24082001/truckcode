@@ -136,64 +136,110 @@ export default function Profile() {
 
         {scannedHistory.length > 0 && (
           <Box my={10} mx={5} p={3} bg={'#fff'} borderRadius={10}>
-            {scannedHistory.map((data, index) => (
-              <Box key={index} mb={5} p={3} bg={'#fff'} borderRadius={10}>
-                <Text fontSize={16} color={COLORS.secondary[800]} bold mb={2}>
-                  Scanned Data {index + 1}
-                </Text>
-                <VStack space={2}>
-                  <HStack space={2} alignItems="center">
-                    <Text bold>Pass No:</Text>
-                    <Input
-                      rounded={10}
-                      borderWidth={2}
-                      borderColor={'gray'}
-                      flex={1}
-                      placeholder="Enter PassNo"
-                      value={data.split('|')[0]}
-                      onChangeText={text => {
-                        const newData = [...scannedHistory];
-                        newData[index] = `${text}|${data.split('|')[1]}|${
-                          data.split('|')[2]
-                        }|${data.split('|')[3]}`;
-                        addScannedData(newData.join('|'));
-                      }}
-                    />
-                  </HStack>
-                  <HStack space={2} alignItems="center">
-                    <Text bold>Truck No:</Text>
-                    <Input
-                      flex={1}
-                      rounded={10}
-                      borderWidth={2}
-                      borderColor={'gray'}
-                      placeholder="Enter TruckNo"
-                      value={data.split('|')[5]}
-                      onChangeText={text => {
-                        const newData = [...scannedHistory];
-                        newData[index] = `${data.split('|')[5]}|${text}|${
-                          data.split('|')[2]
-                        }|${data.split('|')[3]}`;
-                        addScannedData(newData.join('|'));
-                      }}
-                    />
-                  </HStack>
-                  <Text fontSize={14} color={COLORS.secondary[700]}>
-                    <Text bold>Details:</Text> {data.split('|')[2]}
+            {scannedHistory.map((data, index) => {
+              const [
+                passNo,
+                volume1,
+                location,
+                dateTime,
+                owner,
+                volume2,
+                volume3,
+                volume4,
+                volume5,
+                volume6,
+                volume7,
+                volume8,
+                volume9,
+                volume10,
+                volume11,
+                volume12,
+                volume13,
+                volume14,
+              ] = data.split('|');
+
+              return (
+                <Box key={index} mb={5} p={3} bg={'#f9f9f9'} borderRadius={10}>
+                  <Text fontSize={16} color={COLORS.secondary[800]} bold mb={2}>
+                    Scanned Data {index + 1}
                   </Text>
-                  <Text fontSize={14} color={COLORS.secondary[700]}>
-                    <Text bold>Date & Time:</Text> {data.split('|')[3]}
-                  </Text>
-                  <Text fontSize={14} color={COLORS.secondary[700]}>
-                    <Text bold>Owner:</Text> {data.split('|')[4]}
-                  </Text>
-                  <Text fontSize={14} color={COLORS.secondary[700]}>
-                    <Text bold>Volume:</Text> {data.split('|')[1]}
-                  </Text>
-                 
-                </VStack>
-              </Box>
-            ))}
+                  <VStack space={2}>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{passNo}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume1}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      
+                      <Text>{location}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{dateTime}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{owner}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume2}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      
+                      <Text>{volume3}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume4}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume5}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume6}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume7}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      
+                      <Text>{volume8}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      
+                      <Text>{volume9}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume10}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                   
+                      <Text>{volume11}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                    
+                      <Text>{volume12}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume13}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                     
+                      <Text>{volume14}</Text>
+                    </HStack>
+                  </VStack>
+                </Box>
+              );
+            })}
 
             <HStack space={2} justifyContent="center" mt={3}>
               <Button
@@ -214,16 +260,19 @@ export default function Profile() {
       <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
         <Modal.Content>
           <Modal.CloseButton />
-          <Modal.Header>Enter the Code</Modal.Header>
+          <Modal.Header>Enter Code</Modal.Header>
           <Modal.Body>
             <Input
-              placeholder="Enter the code"
               value={code}
-              onChangeText={text => setCode(text)}
+              onChangeText={setCode}
+              placeholder="Enter code"
+              autoFocus
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button onPress={handleCodeSubmit}>Submit</Button>
+            <Button colorScheme="blue" onPress={handleCodeSubmit}>
+              Submit
+            </Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>
