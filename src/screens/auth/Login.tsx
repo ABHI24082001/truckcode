@@ -1,6 +1,17 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Box, Center, Heading, Image, ScrollView, useToast} from 'native-base';
+import {
+  Box,
+  Center,
+  HStack,
+  Heading,
+  IInputProps,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  useToast,
+} from 'native-base';
 import React, {useMemo, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Dimensions} from 'react-native';
@@ -10,7 +21,6 @@ import {AppInput, Btn} from '~/components/core';
 import AppIcon, {IconProps} from '~/components/core/AppIcon';
 import {useAuth} from '~/hooks';
 import {PublicRoutesTypes} from '~/routes';
-import {login} from './api'; 
 
 type FormInput = {
   key: string;
@@ -40,10 +50,11 @@ export default function Login(): JSX.Element {
   } = useForm<FormData>();
 
   const handleLogin = async ({username, password}: FormData) => {
+    const defaultEmail = 'demo@gmail.com';
+    const defaultPassword = '12345678';
+
     try {
-      
-      const response = await login(username, password);
-      if (response.result.Status) {
+      if (username === defaultEmail && password === defaultPassword) {
         toast.show({
           title: 'Login Successful!',
           duration: 5000,
@@ -60,11 +71,7 @@ export default function Login(): JSX.Element {
         });
       }
     } catch (error) {
-      console.log('Login error:', error);
-      toast.show({
-        title: 'An error occurred during login',
-        duration: 5000,
-      });
+      console.log(error);
     }
   };
 
@@ -78,7 +85,7 @@ export default function Login(): JSX.Element {
         rules: {
           required: 'Username is required',
           pattern: {
-            value: /^[A-Za-z]+$/,
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
             message: 'Invalid email address',
           },
         },
@@ -154,7 +161,7 @@ export default function Login(): JSX.Element {
             Login
           </Btn>
 
-          {/* <Box w="full" justifyContent={'center'} alignItems={'center'}>
+          <Box w="full" justifyContent={'center'} alignItems={'center'}>
             <Text fontSize={14}>Sign UP as</Text>
 
             <HStack space={2} alignItems={'center'} justifyContent={'center'}>
@@ -175,7 +182,7 @@ export default function Login(): JSX.Element {
                 </Heading>
               </Pressable>
             </HStack>
-          </Box> */}
+          </Box>
         </Center>
       </ScrollView>
     </>

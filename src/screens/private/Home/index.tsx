@@ -71,11 +71,7 @@ export default function Profile() {
   return (
     <Box safeAreaTop flex={1} bg={COLORS.theme[100]}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Box
-          flex={1}
-          borderRadius={10}
-          py={2}
-         >
+        <Box flex={1} borderRadius={10} py={2}>
           {user?.role === 'DISTRIBUTOR' && (
             <DistributorItemCard itemData={data?.data?.data} />
           )}
@@ -147,13 +143,13 @@ export default function Profile() {
                 </Text>
                 <VStack space={2}>
                   <HStack space={2} alignItems="center">
-                    <Text bold>Code:</Text>
+                    <Text bold>Pass No:</Text>
                     <Input
                       rounded={10}
                       borderWidth={2}
                       borderColor={'gray'}
                       flex={1}
-                      placeholder="Enter code"
+                      placeholder="Enter PassNo"
                       value={data.split('|')[0]}
                       onChangeText={text => {
                         const newData = [...scannedHistory];
@@ -165,18 +161,17 @@ export default function Profile() {
                     />
                   </HStack>
                   <HStack space={2} alignItems="center">
-                    <Text bold>Volume:</Text>
+                    <Text bold>Truck No:</Text>
                     <Input
-                      
                       flex={1}
                       rounded={10}
                       borderWidth={2}
                       borderColor={'gray'}
-                      placeholder="Enter volume"
-                      value={data.split('|')[1]}
+                      placeholder="Enter TruckNo"
+                      value={data.split('|')[5]}
                       onChangeText={text => {
                         const newData = [...scannedHistory];
-                        newData[index] = `${data.split('|')[0]}|${text}|${
+                        newData[index] = `${data.split('|')[5]}|${text}|${
                           data.split('|')[2]
                         }|${data.split('|')[3]}`;
                         addScannedData(newData.join('|'));
@@ -184,11 +179,18 @@ export default function Profile() {
                     />
                   </HStack>
                   <Text fontSize={14} color={COLORS.secondary[700]}>
-                    <Text bold>Date & Time:</Text> {data.split('|')[2]}
+                    <Text bold>Details:</Text> {data.split('|')[2]}
                   </Text>
                   <Text fontSize={14} color={COLORS.secondary[700]}>
-                    <Text bold>Details:</Text> {data.split('|')[3]}
+                    <Text bold>Date & Time:</Text> {data.split('|')[3]}
                   </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>Owner:</Text> {data.split('|')[4]}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>Volume:</Text> {data.split('|')[1]}
+                  </Text>
+                 
                 </VStack>
               </Box>
             ))}

@@ -30,6 +30,14 @@ const TabArr: BottomTabsTypes[] = [
     },
     component: Private.Profile,
   },
+  {
+    route: 'Admin',
+    label: 'Admin',
+    icon: {
+      AntDesignName: 'user',
+    },
+    component: Private.Coupons,
+  },
 ];
 
 export default function TabLayout() {
