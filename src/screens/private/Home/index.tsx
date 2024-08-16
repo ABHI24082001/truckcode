@@ -156,6 +156,22 @@ export default function Profile() {
                 volume12,
                 volume13,
                 volume14,
+                volume15,
+                volume16,
+                volume17,
+                volume18,
+                volume19,
+                volume20,
+                volume21,
+                volume22,
+                volume23,
+                volume24,
+                volume25,
+                volume26,
+                volume27,
+                volume28,
+                volume29,
+                volume30,
               ] = data.split('|');
 
               return (
@@ -165,76 +181,103 @@ export default function Profile() {
                   </Text>
                   <VStack space={2}>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{passNo}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume1}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                      
                       <Text>{location}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{dateTime}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{owner}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume2}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                      
                       <Text>{volume3}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume4}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume5}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume6}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume7}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                      
                       <Text>{volume8}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                      
                       <Text>{volume9}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume10}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                   
                       <Text>{volume11}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                    
                       <Text>{volume12}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume13}</Text>
                     </HStack>
                     <HStack space={2} alignItems="center">
-                     
                       <Text>{volume14}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume15}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume16}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume17}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume18}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume19}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume20}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume21}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume22}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume23}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume24}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume25}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume26}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume27}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume29}</Text>
+                    </HStack>
+                    <HStack space={2} alignItems="center">
+                      <Text>{volume30}</Text>
                     </HStack>
                   </VStack>
                 </Box>
