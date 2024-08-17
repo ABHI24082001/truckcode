@@ -2,17 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   Box,
-  Heading,
+  Button,
+  HStack,
   Image,
+  Input,
+  Modal,
   Pressable,
   Row,
   ScrollView,
   Text,
   VStack,
-  Button,
-  HStack,
-  Modal,
-  Input,
   useToast,
 } from 'native-base';
 import {IMAGES} from '~/assets';
@@ -25,7 +24,6 @@ import {useScannedData} from './ScannedDataContext';
 
 export default function Profile() {
   const {data} = useSwrApi('order/get-orders-by-distributor-cr');
-  const {data: dashboard} = useSwrApi('analytics/distributor-dashboard-data');
   const {user} = useAuth();
   const {navigate} = useNavigation<StackAndTabType>();
   const {logout} = useAuth();
@@ -39,7 +37,17 @@ export default function Profile() {
 
   useEffect(() => {
     if (newScannedData) {
-      addScannedData(newScannedData);
+      // Check if the new scanned data already exists
+      if (!scannedHistory.includes(newScannedData)) {
+        addScannedData(newScannedData);
+      } else {
+        toast.show({
+          title: 'Duplicate Data',
+          description: 'This scanned data has already been added.',
+          status: 'warning',
+          duration: 3000,
+        });
+      }
     }
   }, [newScannedData]);
 
@@ -66,6 +74,44 @@ export default function Profile() {
       title: 'All Manufacturer',
       onPress: () => navigate('Manufacturer'),
     },
+  ];
+
+  // Define data labels
+  const dataLabels = [
+    'Pass No',
+    'Volume 1',
+    'Location',
+    'Date/Time',
+    'Owner',
+    'Volume 2',
+    'Volume 3',
+    'Volume 4',
+    'Volume 5',
+    'Volume 6',
+    'Volume 7',
+    'Volume 8',
+    'Volume 9',
+    'Volume 10',
+    'Volume 11',
+    'Volume 12',
+    'Volume 13',
+    'Volume 14',
+    'Volume 15',
+    'Volume 16',
+    'Volume 17',
+    'Volume 18',
+    'Volume 19',
+    'Volume 20',
+    'Volume 21',
+    'Volume 22',
+    'Volume 23',
+    'Volume 24',
+    'Volume 25',
+    'Volume 26',
+    'Volume 27',
+    'Volume 28',
+    'Volume 29',
+    'Volume 30',
   ];
 
   return (
@@ -137,149 +183,23 @@ export default function Profile() {
         {scannedHistory.length > 0 && (
           <Box my={10} mx={5} p={3} bg={'#fff'} borderRadius={10}>
             {scannedHistory.map((data, index) => {
-              const [
-                passNo,
-                volume1,
-                location,
-                dateTime,
-                owner,
-                volume2,
-                volume3,
-                volume4,
-                volume5,
-                volume6,
-                volume7,
-                volume8,
-                volume9,
-                volume10,
-                volume11,
-                volume12,
-                volume13,
-                volume14,
-                volume15,
-                volume16,
-                volume17,
-                volume18,
-                volume19,
-                volume20,
-                volume21,
-                volume22,
-                volume23,
-                volume24,
-                volume25,
-                volume26,
-                volume27,
-                volume28,
-                volume29,
-                volume30,
-              ] = data.split('|');
-
+              const dataItems = data.split('|');
               return (
                 <Box key={index} mb={5} p={3} bg={'#f9f9f9'} borderRadius={10}>
                   <Text fontSize={16} color={COLORS.secondary[800]} bold mb={2}>
                     Scanned Data {index + 1}
                   </Text>
-                  <VStack space={2}>
-                    <HStack space={2} alignItems="center">
-                      <Text>{passNo}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume1}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{location}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{dateTime}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{owner}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume2}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume3}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume4}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume5}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume6}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume7}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume8}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume9}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume10}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume11}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume12}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume13}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume14}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume15}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume16}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume17}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume18}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume19}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume20}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume21}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume22}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume23}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume24}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume25}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume26}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume27}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume29}</Text>
-                    </HStack>
-                    <HStack space={2} alignItems="center">
-                      <Text>{volume30}</Text>
-                    </HStack>
-                  </VStack>
+                  <Box>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                      <VStack space={1}>
+                        {dataLabels.map((label, index) => (
+                          <Box key={index} bg={'#f9f9f9'} borderRadius={8}>
+                            <Text>{dataItems[index]}</Text>
+                          </Box>
+                        ))}
+                      </VStack>
+                    </ScrollView>
+                  </Box>
                 </Box>
               );
             })}
@@ -298,6 +218,8 @@ export default function Profile() {
             </HStack>
           </Box>
         )}
+
+        
       </ScrollView>
 
       <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>

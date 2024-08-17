@@ -7,8 +7,48 @@ const HistoryScreen = () => {
   const {scannedHistory} = useScannedData();
 
   const parseScannedData = data => {
-    const [code, volume, dateTime, details] = data.split('|');
-    return {code, volume, dateTime, details};
+    const [
+      code,
+      volume,
+      dateTime,
+      details,
+      volume1,
+      volume2,
+      volume3,
+      volume4,
+      volume5,
+      volume6,
+      volume7,
+      volume8,
+      volume9,
+      volume10,
+      volume12,
+      volume11,
+      volume13,
+      volume14,
+    ] = data.split('|');
+    return {
+      code,
+      volume,
+      dateTime,
+      details,
+      volume1,
+      volume2,
+      volume3,
+      volume4,
+      volume5,
+      volume6,
+      volume7,
+      volume8,
+      volume9,
+      volume10,
+      volume12,
+      volume11,
+      volume13,
+      volume14,
+      
+
+    };
   };
 
   return (
@@ -25,7 +65,7 @@ const HistoryScreen = () => {
           >
           {scannedHistory.length > 0 ? (
             scannedHistory.map((item, index) => {
-              const {code, volume, dateTime, details} = parseScannedData(item);
+              const {code, volume, dateTime, details ,volume1, volume2, volume3, volume4, volume5, volume6, volume7 , volume8 , volume9 , volume10 , volume12 , volume11 } = parseScannedData(item);
 
               return (
                 <Box key={index} p={3} mb={3} bg={'#fff'} borderRadius={10}>
@@ -43,6 +83,42 @@ const HistoryScreen = () => {
                   </Text>
                   <Text fontSize={14} color={COLORS.secondary[700]}>
                     <Text bold>Details:</Text> {details}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume1:</Text> {volume1}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume2:</Text> {volume2}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume3:</Text> {volume3}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume4:</Text> {volume4}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume5:</Text> {volume5}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume6:</Text> {volume6}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume7:</Text> {volume7}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume8:</Text> {volume8}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume9:</Text> {volume9}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume10:</Text> {volume10}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume11:</Text> {volume11}
+                  </Text>
+                  <Text fontSize={14} color={COLORS.secondary[700]}>
+                    <Text bold>volume12:</Text> {volume12}
                   </Text>
                 </Box>
               );

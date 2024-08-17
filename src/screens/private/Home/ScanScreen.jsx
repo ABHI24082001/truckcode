@@ -1,34 +1,37 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, Linking, View} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, Linking, View } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {RNCamera} from 'react-native-camera';
-import {useNavigation} from '@react-navigation/native';
+import { RNCamera } from 'react-native-camera';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ScanScreen() {
   const navigation = useNavigation();
+  const [scanning, setScanning] = useState(true);
 
-  const onSuccess = (e) => {
-    navigation.navigate('Home', { scannedData: e.data });
-    Linking.openURL(e.data).catch((err) =>
-      console.error('An error occurred', err)
-    );
+  const onSuccess = e => {
+    if (scanning) {
+      setScanning(false);
+      navigation.navigate('Home', { scannedData: e.data });
+      Linking.openURL(e.data).catch(err => console.error('An error occurred', err));
+      setTimeout(() => setScanning(true), 2000);
+    }
   };
 
   return (
     <View style={styles.container}>
+      
       <QRCodeScanner
         onRead={onSuccess}
-        flashMode={RNCamera.Constants.FlashMode.off}
-        topContent={
-          <Text style={styles.centerText}>
-            Scan the QR code.
-          </Text>
-        }
-        bottomContent={
-          <TouchableOpacity style={styles.buttonTouchable}>
-            <Text style={styles.buttonText}>OK. Got it!</Text>
-          </TouchableOpacity>
-        }
+        reactivate={scanning}
+        reactivateTimeout={1000}
+        cameraProps={{
+          captureAudio: false,
+          ratio: '16:9',
+          autofocus: true,
+        }}
+        flashMode={RNCamera.Constants.FlashMode.auto}
+        showMarker={true}
+        markerStyle={{ borderColor: 'red', borderWidth: 2 }}
       />
     </View>
   );
