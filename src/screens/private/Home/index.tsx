@@ -21,23 +21,23 @@ import {useAuth, useSwrApi} from '~/hooks';
 import {StackAndTabType} from '~/routes/private/types';
 import {COLORS} from '~/styles';
 import {useScannedData} from './ScannedDataContext';
+import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 export default function Profile() {
   const {data} = useSwrApi('order/get-orders-by-distributor-cr');
-  const {user} = useAuth();
+  const {user, logout} = useAuth();
   const {navigate} = useNavigation<StackAndTabType>();
-  const {logout} = useAuth();
   const route = useRoute();
   const {scannedData: newScannedData} = route.params || {};
   const {scannedHistory, addScannedData} = useScannedData();
   const toast = useToast();
-
+  const [isFlipped, setIsFlipped] = useState(false);
+  const flipAnim = useState(new Animated.Value(0))[0];
   const [modalVisible, setModalVisible] = useState(false);
   const [code, setCode] = useState('');
 
   useEffect(() => {
     if (newScannedData) {
-      // Check if the new scanned data already exists
       if (!scannedHistory.includes(newScannedData)) {
         addScannedData(newScannedData);
       } else {
@@ -61,58 +61,41 @@ export default function Profile() {
     setCode('');
   };
 
-  const listData = [
-    {
-      title: 'Support',
-      onPress: () => navigate('Support'),
-    },
-    {
-      title: 'Logout',
-      onPress: () => logout(),
-    },
-    {
-      title: 'All Manufacturer',
-      onPress: () => navigate('Manufacturer'),
-    },
-  ];
+  const flipCard = () => {
+    Animated.timing(flipAnim, {
+      toValue: isFlipped ? 0 : 180,
+      duration: 500,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsFlipped(!isFlipped);
+    });
+  };
 
-  // Define data labels
-  const dataLabels = [
-    'Pass No',
-    'Volume 1',
-    'Location',
-    'Date/Time',
-    'Owner',
-    'Volume 2',
-    'Volume 3',
-    'Volume 4',
-    'Volume 5',
-    'Volume 6',
-    'Volume 7',
-    'Volume 8',
-    'Volume 9',
-    'Volume 10',
-    'Volume 11',
-    'Volume 12',
-    'Volume 13',
-    'Volume 14',
-    'Volume 15',
-    'Volume 16',
-    'Volume 17',
-    'Volume 18',
-    'Volume 19',
-    'Volume 20',
-    'Volume 21',
-    'Volume 22',
-    'Volume 23',
-    'Volume 24',
-    'Volume 25',
-    'Volume 26',
-    'Volume 27',
-    'Volume 28',
-    'Volume 29',
-    'Volume 30',
-  ];
+  const frontAnimatedStyle = {
+    transform: [
+      {
+        rotateY: flipAnim.interpolate({
+          inputRange: [0, 180],
+          outputRange: ['0deg', '180deg'],
+        }),
+      },
+    ],
+  };
+
+  const backAnimatedStyle = {
+    transform: [
+      {
+        rotateY: flipAnim.interpolate({
+          inputRange: [0, 180],
+          outputRange: ['180deg', '360deg'],
+        }),
+      },
+    ],
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  };
 
   return (
     <Box safeAreaTop flex={1} bg={COLORS.theme[100]}>
@@ -165,82 +148,114 @@ export default function Profile() {
           </Text>
         </Box>
 
-        <Row alignItems={'center'} justifyContent={'center'}>
-          <Box w={80} h={80}>
-            <Image
-              source={IMAGES.LOGO4}
-              size={'100%'}
-              resizeMode="contain"
-              alt={'logo'}
-            />
-          </Box>
-        </Row>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={flipCard}>
+            <Animated.View style={[styles.card, frontAnimatedStyle]}>
+              <TouchableOpacity
+                onPress={() => navigate('ScanScreen')}
+                style={styles.cardText}>
+                <Text style={{color: '#fff'}}>Scan</Text>
+              </TouchableOpacity>
+            </Animated.View>
+            <Animated.View
+              style={[styles.card, styles.cardBack, backAnimatedStyle]}>
+              {scannedHistory.length > 0 && (
+                <Box flex={1}>
+                  <ScrollView
+                    showsVerticalScrollIndicator={true}
+                    contentContainerStyle={styles.scrollContainer}>
+                    <Box flexDirection="row" flexWrap="wrap">
+                      {scannedHistory.map((data, index) => {
+                        const dataItems = data.split('|');
+                        return (
+                          <Box
+                            key={index}
+                            bg={'#f9f9f9'}
+                            p={2}
+                            m={2}
+                            borderRadius={5}
+                            maxWidth={300} // Adjust maxWidth to fit your design needs
+                          >
+                            <HStack flexWrap="wrap">
+                              {dataItems.map((item, i) => (
+                                <Box
+                                  key={i}
+                                  p={0.9}
+                                  maxWidth="100%" // Ensure items wrap within container
+                                >
+                                  <Text fontSize={10}>{item}</Text>
+                                </Box>
+                              ))}
+                            </HStack>
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  </ScrollView>
+                </Box>
+              )}
+            </Animated.View>
+          </TouchableOpacity>
+        </View>
 
         <Button onPress={() => navigate('ScanScreen')} mt={4} mb={10} mx={10}>
           Scan QR Code
         </Button>
-
-        {scannedHistory.length > 0 && (
-          <Box my={10} mx={5} p={3} bg={'#fff'} borderRadius={10}>
-            {scannedHistory.map((data, index) => {
-              const dataItems = data.split('|');
-              return (
-                <Box key={index} mb={5} p={3} bg={'#f9f9f9'} borderRadius={10}>
-                  <Text fontSize={16} color={COLORS.secondary[800]} bold mb={2}>
-                    Scanned Data {index + 1}
-                  </Text>
-                  <Box>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                      <VStack space={1}>
-                        {dataLabels.map((label, index) => (
-                          <Box key={index} bg={'#f9f9f9'} borderRadius={8}>
-                            <Text>{dataItems[index]}</Text>
-                          </Box>
-                        ))}
-                      </VStack>
-                    </ScrollView>
-                  </Box>
-                </Box>
-              );
-            })}
-
-            <HStack space={2} justifyContent="center" mt={3}>
-              <Button
-                flex={1}
-                onPress={() => toast.show({title: 'In', status: 'info'})}>
-                In
-              </Button>
-              <Button
-                flex={1}
-                onPress={() => toast.show({title: 'Out', status: 'info'})}>
-                Out
-              </Button>
-            </HStack>
-          </Box>
-        )}
-
-        
       </ScrollView>
 
-      <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
+      <Modal
+        isOpen={modalVisible}
+        onClose={() => setModalVisible(false)}
+        size="lg">
         <Modal.Content>
-          <Modal.CloseButton />
           <Modal.Header>Enter Code</Modal.Header>
           <Modal.Body>
             <Input
+              placeholder="Enter code"
               value={code}
               onChangeText={setCode}
-              placeholder="Enter code"
-              autoFocus
+              mb={4}
             />
+            <Button onPress={handleCodeSubmit}>Submit</Button>
           </Modal.Body>
-          <Modal.Footer>
-            <Button colorScheme="blue" onPress={handleCodeSubmit}>
-              Submit
-            </Button>
-          </Modal.Footer>
         </Modal.Content>
       </Modal>
     </Box>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: 300,
+    height: 200,
+    perspective: 1000,
+  },
+  card: {
+    width: 300,
+    height: 200,
+    marginLeft: 60,
+    backfaceVisibility: 'hidden',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#66c4ff',
+    borderRadius: 10,
+    borderColor: '#ccc',
+    borderWidth: 1,
+  },
+  cardBack: {
+    backgroundColor: '#f1f1f1',
+    zIndex: 1,
+    transform: [{rotateY: '180deg'}],
+  },
+  cardText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  scrollContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+});

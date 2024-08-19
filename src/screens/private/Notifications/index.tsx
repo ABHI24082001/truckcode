@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import {
   Actionsheet,
@@ -24,10 +25,13 @@ import {PrivateContainer} from '~/components/containers';
 import {AppIcon} from '~/components/core';
 import {Empty} from '~/components/shared';
 import {useMutation, useSwrApi} from '~/hooks';
+import { StackAndTabType } from '~/routes/private/types';
+
 
 export default function Notifications() {
   const {isOpen, onOpen, onClose} = useDisclose(); // For modal
   const [challanNumber, setChallanNumber] = useState('');
+   const {navigate} = useNavigation<StackAndTabType>();
 
   const handleChallanSubmit = () => {
     console.log('Challan Number:', challanNumber);
@@ -43,7 +47,7 @@ export default function Notifications() {
           <Row alignItems={'center'} justifyContent={'center'} mb={4}>
             <Box w={80} h={80}>
               <Image
-                source={IMAGES.LOGO5}
+                source={IMAGES.LOGO6}
                 size={'100%'}
                 resizeMode="contain"
                 alt={'logo'}
@@ -69,7 +73,7 @@ export default function Notifications() {
             </Button>
             <Button
               colorScheme="blue"
-              onPress={() => console.log('Register Loading Details')}
+              onPress={() => navigate('OrderDetailDistributor')}
               shadow={2}
               py={3}>
               Register Loading Details

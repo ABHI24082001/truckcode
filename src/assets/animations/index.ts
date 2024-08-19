@@ -9,6 +9,8 @@ import order from './order.json';
 import search from './search.json';
 import success from './success.json';
 import support from './support.json';
+import Login from './Login.json';
+import Regester from './Regester.json'
 export default {
   search,
   notification,
@@ -21,4 +23,6 @@ export default {
   support,
   onBoardingThree,
   lock,
+  Login,
+  Regester,
 };

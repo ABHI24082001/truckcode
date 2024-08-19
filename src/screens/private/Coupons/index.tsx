@@ -41,21 +41,23 @@ const Coupons = () => {
     if (boxName === 'Loading') {
       navigate('Notifications'); // Navigate to Notifications screen
     } else if (boxName === 'Unloading') {
-      navigate('OrderDetailDistributor'); // Navigate to Offer screen
+      navigate('Manufacturer'); // Navigate to Offer screen
+    } else if (boxName === 'Fuel'){
+      navigate('Support')
     }
   };
 
 
 
   const getBackgroundColor = boxName => {
-    return selectedBox === boxName ? 'lightblue' : 'white';
+    return selectedBox === boxName ? '#80aeff' : 'white';
   };
 
   return (
     <Box safeAreaTop flex={1} bg={COLORS.theme[100]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header Section */}
-        <Row alignItems={'center'} justifyContent={'space-between'} mx={5}>
+        <Row alignItems={'center'} justifyContent={'space-between'} mx={5} my={2}>
           <HStack alignItems="center">
             <Image
               source={IMAGES.LOGO3}
@@ -63,9 +65,7 @@ const Coupons = () => {
               resizeMode="contain"
               alt={'logo'}
             />
-            <Text bold fontSize={'xl'}>
-              Tranzol
-            </Text>
+           
           </HStack>
           <Box>
             <Pressable onPress={logout}>
@@ -109,7 +109,7 @@ const Coupons = () => {
                 borderBottomWidth={2}
                 alignItems="center">
                 <Box
-                  bgColor={'blue.600'}
+                  bgColor={'blue.500'}
                   p={2.5}
                   borderRadius={'full'}
                   width={20}
@@ -138,7 +138,7 @@ const Coupons = () => {
                 </Box>
 
                 <Box mx={3}>
-                  <Text fontSize={'40'} textAlign={'center'} color={'blue.700'}>
+                  <Text fontSize={'40'} textAlign={'center'} color={'#000'}>
                     {boxName}
                   </Text>
                 </Box>

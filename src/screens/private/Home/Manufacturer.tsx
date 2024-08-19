@@ -1,128 +1,128 @@
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import {
+  Actionsheet,
+  Alert,
   Avatar,
   Box,
+  Button,
+  FlatList,
   HStack,
+  Icon,
+  Image,
+  Input,
+  Modal,
   Pressable,
   Row,
-  ScrollView,
-  
   Text,
   VStack,
+  useDisclose,
 } from 'native-base';
-import React from 'react';
-
-import {AppIcon, NotificationIcon} from '~/components/core';
-import {useAuth, useSwrApi} from '~/hooks';
+import React, {useState} from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {ANIMATIONS, IMAGES} from '~/assets';
+import {PrivateContainer} from '~/components/containers';
+import {AppIcon} from '~/components/core';
+import {Empty} from '~/components/shared';
+import {useMutation, useSwrApi} from '~/hooks';
 import {StackAndTabType} from '~/routes/private/types';
-import {COLORS} from '~/styles';
 
 export default function Manufacturer() {
-  const {user} = useAuth();
-  console.log('user', user);
-  const {navigate, goBack} = useNavigation<StackAndTabType>();
-  const {data} = useSwrApi('user?role=MANUFACTURER');
+  const {isOpen, onOpen, onClose} = useDisclose(); // For modal
+  const [challanNumber, setChallanNumber] = useState('');
+  const {navigate} = useNavigation<StackAndTabType>();
 
-  const date = new Date();
-  const datas = [
-    {
-      name: 'Gupta Traders',
-      id: '#12345',
-      status: 'Approved',
-      requestDate: date,
-    },
-    {
-      name: 'Gupta Traders',
-      id: '#12345',
-      status: 'Pending',
-      requestDate: date,
-    },
-    {
-      name: 'Gupta Traders',
-      id: '#12345',
-      status: 'Approved',
-      requestDate: date,
-    },
-    {
-      name: 'Gupta Traders',
-      id: '#12345',
-      status: 'Pending',
-      requestDate: date,
-    },
-    {
-      name: 'Gupta Traders',
-      id: '#12345',
-      status: 'Pending',
-      requestDate: date,
-    },
-  ];
+  const handleChallanSubmit = () => {
+    console.log('Challan Number:', challanNumber);
+    // Perform any submit actions here, such as API calls
+    onClose(); // Close the modal after submission
+  };
+
   return (
     <>
-      <Box safeAreaTop flex={1} bg={COLORS.theme[100]}>
-        
-        <Box px={3} py={3} bg={COLORS.secondary[200]}>
-          <Row w={'full'} justifyContent={'space-between'}>
-            <HStack alignItems={'center'}>
-              <Pressable _pressed={{opacity: 0.5}} onPress={() => goBack()}>
-                <AppIcon AntDesignName="arrowleft" />
-              </Pressable>
-            </HStack>
-            <Row alignItems={'center'} space={5}>
-              <NotificationIcon
-                isNotification
-                onPress={() => navigate('Notifications')}
+      <PrivateContainer flex={1} title="Challan Details" bg={'white'}>
+        <Box flex={1} p={4}>
+          {/* Logo */}
+          <Row alignItems={'center'} justifyContent={'center'} mb={4}>
+            <Box w={80} h={80}>
+              <Image
+                source={IMAGES.LOGO6}
+                size={'100%'}
+                resizeMode="contain"
+                alt={'logo'}
               />
-            </Row>
-          </Row>
-        </Box>
-        <ScrollView>
-          {data?.data?.data?.map((item: any, index: number) => (
-            <Box borderBottomWidth={0.3} my={1} py={2} px={3}>
-              <HStack alignItems={'center'} justifyContent={'space-between'}>
-                <HStack space={4}>
-                  <Avatar>{item?.name.slice(0, 1).toUpperCase()}</Avatar>
-                  <VStack>
-                    <Text fontSize={15}>{item?.name}</Text>
-                    <Text color="black" fontSize={12}>
-                      {item?.userId}
-                    </Text>
-                    <Text>
-                      Request date :
-                      {moment(user?.createdAt).format('MMMM D, YYYY')}
-                    </Text>
-                  </VStack>
-                </HStack>
-                <Pressable
-                  py={1}
-                  px={2}
-                  borderRadius={5}
-                  _pressed={{opacity: 0.5}}
-                  bg={item?.isVerified ? 'green.400' : 'gray.300'}>
-                  <HStack alignItems={'center'} space={2}>
-                    {item?.isVerified === 'true' ? (
-                      <AppIcon
-                        AntDesignName="checkcircle"
-                        size={20}
-                        color={'white'}
-                      />
-                    ) : (
-                      <AppIcon
-                        MaterialIconsName="error"
-                        size={20}
-                        color={'white'}
-                      />
-                    )}
-                    <Text fontWeight={600} fontSize={15} color="white">
-                      {item?.isVerified ? 'Approved' : 'Pending'}
-                    </Text>
-                  </HStack>
-                </Pressable>
-              </HStack>
             </Box>
-          ))}
-        </ScrollView>
-      </Box>
+          </Row>
+          {/* Buttons */}
+          <VStack space={4}>
+            <Button
+              colorScheme="gray"
+              onPress={onOpen}
+              shadow={2}
+              py={3}
+              leftIcon={
+                <Icon
+                  as={Ionicons}
+                  name="document-text-outline"
+                  size="sm"
+                  color="white"
+                />
+              }>
+              Enter Challan Number
+            </Button>
+            <Button
+              colorScheme="blue"
+              onPress={() => console.log('Show Unloading Details')}
+              shadow={2}
+              py={3}>
+              Register Unloading Details
+            </Button>
+            <Button
+              colorScheme="green"
+              onPress={() => console.log('Show Loading Details')}
+              shadow={2}
+              py={3}>
+              Show Unloading Details
+            </Button>
+          </VStack>
+        </Box>
+
+        {/* Modal for Entering Challan Number */}
+        <Modal isOpen={isOpen} onClose={onClose} size="lg">
+          <Modal.Content maxWidth="400px">
+            <Modal.CloseButton />
+            <Modal.Header>Enter Challan Number</Modal.Header>
+            <Modal.Body>
+              <VStack space={4}>
+                <Input
+                  placeholder="Challan Number"
+                  value={challanNumber}
+                  onChangeText={setChallanNumber}
+                  InputLeftElement={
+                    <Icon
+                      as={<Ionicons name="document-text-outline" />}
+                      size={5}
+                      ml="2"
+                      color="muted.400"
+                    />
+                  }
+                />
+              </VStack>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button.Group space={2}>
+                <Button
+                  variant="ghost"
+                  colorScheme="blueGray"
+                  onPress={onClose}>
+                  Cancel
+                </Button>
+                <Button onPress={handleChallanSubmit}>Submit</Button>
+              </Button.Group>
+            </Modal.Footer>
+          </Modal.Content>
+        </Modal>
+      </PrivateContainer>
     </>
   );
 }
